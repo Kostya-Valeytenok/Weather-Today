@@ -1,9 +1,9 @@
-package com.testtask.weather.api.di.modules
+package com.testtask.weather.di.base_modules
 
 import android.app.Activity
 import android.content.Context
-import com.testtask.weather.api.di.GetActivity
-import com.testtask.weather.api.di.scope.NetworkScope
+import com.testtask.weather.di.GetActivity
+import com.testtask.weather.di.scope.NetworkScope
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named

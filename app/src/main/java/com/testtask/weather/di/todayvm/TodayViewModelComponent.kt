@@ -1,11 +1,11 @@
-package com.testtask.weather.api.di.todayvm
+package com.testtask.weather.di.todayvm
 
 import android.content.SharedPreferences
 import androidx.fragment.app.FragmentManager
 import com.testtask.weather.api.JSONPlaceHolderApi
-import com.testtask.weather.api.di.BaseAppComponents
-import com.testtask.weather.api.di.modules.FragmentManagerModule
-import com.testtask.weather.api.di.scope.TodayViewModuleScope
+import com.testtask.weather.di.BaseAppComponents
+import com.testtask.weather.di.base_modules.FragmentManagerModule
+import com.testtask.weather.di.scope.TodayViewModuleScope
 import com.testtask.weather.dialogs.DisabledLocation
 import dagger.Component
 

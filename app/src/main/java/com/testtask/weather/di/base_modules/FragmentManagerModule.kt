@@ -1,9 +1,9 @@
-package com.testtask.weather.api.di.modules
+package com.testtask.weather.di.base_modules
 
 import android.app.Activity
 import androidx.fragment.app.FragmentManager
 import com.testtask.weather.MainActivity
-import com.testtask.weather.api.di.scope.TodayViewModuleScope
+import com.testtask.weather.di.scope.TodayViewModuleScope
 import dagger.Module
 import dagger.Provides
 

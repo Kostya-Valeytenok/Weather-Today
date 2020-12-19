@@ -1,4 +1,4 @@
-package com.testtask.weather.api.di.scope
+package com.testtask.weather.di.scope
 
 import javax.inject.Scope
 

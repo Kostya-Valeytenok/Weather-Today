@@ -10,7 +10,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.testtask.weather.api.di.GetDIApplication
 
 
 class MainActivity : AppCompatActivity() {

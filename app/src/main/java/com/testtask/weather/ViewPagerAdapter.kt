@@ -9,8 +9,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.testtask.weather.api.FiveDayWeatherJSON
 import com.testtask.weather.databinding.BaseWatherItemsBinding
 import com.testtask.weather.ui.today.ViewPagerViewModel
+import javax.inject.Inject
 
-class ViewPagerAdapter(var contexts: Activity, var weatherInfo: FiveDayWeatherJSON) : RecyclerView.Adapter<PagerVH>() {
+class ViewPagerAdapter(var contexts: Activity) : RecyclerView.Adapter<PagerVH>() {
+
+    lateinit var weatherInfo: FiveDayWeatherJSON
 
     private val colors = intArrayOf(
         android.R.color.black,

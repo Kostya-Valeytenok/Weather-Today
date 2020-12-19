@@ -1,9 +1,9 @@
-package com.testtask.weather.api.di.modules
+package com.testtask.weather.di.base_modules
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.testtask.weather.api.di.ApplicationContext
-import com.testtask.weather.api.di.scope.NetworkScope
+import com.testtask.weather.di.ApplicationContext
+import com.testtask.weather.di.scope.NetworkScope
 import dagger.Module
 import dagger.Provides
 

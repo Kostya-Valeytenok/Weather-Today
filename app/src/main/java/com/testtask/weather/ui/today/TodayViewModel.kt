@@ -5,17 +5,15 @@ import android.app.Activity
 import android.location.Location
 import android.view.View
 import androidx.databinding.BaseObservable
-import androidx.fragment.app.FragmentManager
 import com.google.android.gms.location.LocationServices
 import com.testtask.weather.BR
-import com.testtask.weather.MainActivity
 import com.testtask.weather.R
 import com.testtask.weather.api.FiveDayWeatherJSON
-import com.testtask.weather.api.di.GetDIApplication
-import com.testtask.weather.api.di.modules.FragmentManagerModule
-import com.testtask.weather.api.di.todayvm.DaggerTodayViewModelComponent
-import com.testtask.weather.api.di.todayvm.LocationDialogModule
-import com.testtask.weather.dialogs.DisabledLocation
+import com.testtask.weather.di.GetDIApplication
+import com.testtask.weather.di.base_modules.FragmentManagerModule
+import com.testtask.weather.di.todayvm.DaggerTodayViewModelComponent
+import com.testtask.weather.di.todayvm.LocationDialogModule
+import dagger.Provides
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import retrofit2.Call
@@ -28,9 +26,9 @@ class TodayViewModel(var context: Activity) : BaseObservable() {
     var todayVMComponent = DaggerTodayViewModelComponent.builder().locationDialogModule(
         LocationDialogModule(context)).baseAppComponents(GetDIApplication().get(context)!!.
     getApplicationProvider()).fragmentManagerModule(FragmentManagerModule(context)).build()
-
     var latitude: Double = 0.0
     var longitude: Double = 0.0
+
     var visible: Int = View.VISIBLE
     lateinit var weatherInfo: FiveDayWeatherJSON
     internal var trys = 0

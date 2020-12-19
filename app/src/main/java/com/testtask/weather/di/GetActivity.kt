@@ -1,4 +1,4 @@
-package com.testtask.weather.api.di
+package com.testtask.weather.di
 
 import javax.inject.Qualifier
 
