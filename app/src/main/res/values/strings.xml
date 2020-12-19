@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Weather Today</string>
+    <string name="title_today">Today</string>
+    <string name="title_forecast">Forecast</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="api_key">16399fef95b2d9c0d9ceba05fd242875</string>
+    <string name="feels_like">"Feels like: "</string>
+    <string name="share">Share</string>
+    <string name="Humidity">Humidity</string>
+    <string name="Wind_speed">Wind speed</string>
+    <string name="Wind_direction">Wind direction</string>
+    <string name="Cloudiness">Cloudiness</string>
+    <string name="Atmospheric_pressure">Atmospheric pressure</string>
+    <string name="Precipitation_volume">Precipitation volume in the last 3 hours</string>
+</resources>
