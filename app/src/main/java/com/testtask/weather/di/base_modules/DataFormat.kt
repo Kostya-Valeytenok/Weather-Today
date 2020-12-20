@@ -5,17 +5,16 @@ import com.testtask.weather.di.ApplicationContext
 import com.testtask.weather.di.scope.NetworkScope
 import dagger.Module
 import dagger.Provides
+import java.text.SimpleDateFormat
+
 
 @Module
-class ContextModule(context: Context) {
+class DataFormat {
 
-    var context: Context = context
-
-    @ApplicationContext
     @NetworkScope
     @Provides
-    fun context(): Context {
-        return context.applicationContext
+    fun getDataFormat(): SimpleDateFormat {
+        return SimpleDateFormat("y-M-d H:m:s")
     }
 
 }

@@ -29,22 +29,33 @@ class TodayFragment : Fragment() {
             Manifest.permission.ACCESS_COARSE_LOCATION)
     lateinit var bind: FragmentTodayBinding
     lateinit var fragmentComponent: TodayFragmentComponent
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        fragmentComponent  = DaggerTodayFragmentComponent.builder()
-                .activityModule(activity?.let { ActivityModule(it) }).cacheComponents(activity?.let { GetDIApplication().get(it)?.getCache() })
-                .fragmentTodayBindingModule(FragmentTodayBindingModule(inflater,container))
-                .build()
+        setTitle()
+        getDiComponent(inflater,container)
         bind = fragmentComponent.getFragmentTodayBinding
-        val title = activity?.findViewById<TextView>(R.id.titleTextView)
-        title?.setText("TODAY")
         bind.viewModel =fragmentComponent.getVM
-        if(fragmentComponent.getCache.isThereCache()){
-            fragmentComponent.getTodayWeatherList.getTodayWeatherInfo(fragmentComponent.getCache.weatherInfoCache).subscribe(getObserverForTodayWeatherList())
-        }
-        else getWeatherInfoFromApi()
+        getWeatherInfo()
         return bind.root
     }
-
+    private fun setTitle(){
+        var title = activity?.findViewById<TextView>(R.id.titleTextView)
+        title?.setText("TODAY")
+    }
+    private fun getDiComponent(inflater: LayoutInflater, container: ViewGroup?){
+        fragmentComponent  = DaggerTodayFragmentComponent.builder()
+            .activityModule(activity?.let { ActivityModule(it) }).cacheComponents(activity?.let { GetDIApplication().get(it)?.getCache() })
+            .fragmentTodayBindingModule(FragmentTodayBindingModule(inflater,container))
+            .build()
+    }
+    private fun getWeatherInfo(){
+        if(fragmentComponent.getCache.isThereCache()){
+            fragmentComponent.getTodayWeatherList
+                .getTodayWeatherInfo(fragmentComponent.getCache.weatherInfoCache)
+                .subscribe(getObserverForTodayWeatherList())
+        }
+        else getWeatherInfoFromApi()
+    }
     private fun getObserverForTodayWeatherList(): Observer<FiveDayWeatherJSON> {
         return object : Observer<FiveDayWeatherJSON> {
             override fun onNext(t: FiveDayWeatherJSON?) {

@@ -11,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Module(includes = [OkHttpClientModule::class])
 class NetworkServiceModule {
+
     private val BASE_URL = "https://api.openweathermap.org"
 
     @NetworkScope

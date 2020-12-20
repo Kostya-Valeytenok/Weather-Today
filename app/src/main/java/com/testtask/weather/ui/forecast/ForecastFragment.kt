@@ -12,27 +12,46 @@ import androidx.recyclerview.widget.RecyclerView
 import com.testtask.weather.*
 import com.testtask.weather.databinding.FragmentForecastBinding
 import com.testtask.weather.di.GetDIApplication
+import com.testtask.weather.di.forecast.*
 import com.testtask.weather.di.forecast_list.DaggerForecastListComponent
 
 class ForecastFragment : Fragment() {
 
-    private var layoutManager: RecyclerView.LayoutManager? = null
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        val forecastComponent= DaggerForecastListComponent.builder().cacheComponents(
-            activity?.let { GetDIApplication().get(it)?.getCache() }).build()
-        var bind:FragmentForecastBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_forecast, container, false)
-        bind.viewModel = ForecastViewModel()
-        val title = activity?.findViewById<TextView>(R.id.titleTextView)
-        if(forecastComponent.getCache.isThereCache()) title?.text =forecastComponent.getCache.weatherInfoCache.city.name.toUpperCase()
-        else title?.text = ""
-        layoutManager = LinearLayoutManager(context)
-        bind.forecastCardView.layoutManager = layoutManager
-        if(forecastComponent.getCache.isThereCache())
-        bind.forecastCardView.adapter  = activity?.let {CardViewAdapter(ForecastCreateList(requireActivity()).forecastList, it) }
+    lateinit var forecastComponent:ForecastComponent
+    lateinit var bind:FragmentForecastBinding
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        getDiComponent(inflater,container)
+        createBinding()
+        setTitle()
+        setForecastListWeather()
         return bind.root
+    }
+    private fun getDiComponent(inflater: LayoutInflater, container: ViewGroup?){
+        forecastComponent= DaggerForecastComponent.builder()
+            .cacheComponents(activity?.let { GetDIApplication().get(it)?.getCache() })
+            .fragmentForecastBindingModule(FragmentForecastBindingModule(inflater,container))
+            .fragmentForecastVMModule(FragmentForecastVMModule())
+            .activityModule(activity?.let { ActivityModule(it) })
+            .build()
+    }
+    private fun createBinding(){
+        bind =forecastComponent.getBindingModule
+        bind.viewModel = forecastComponent.getVM
+    }
+    private fun setTitle(){
+        val title = activity?.findViewById<TextView>(R.id.titleTextView)
+        if(forecastComponent.getCache.isThereCache())
+            title?.text =forecastComponent.getCache.weatherInfoCache.city.name.toUpperCase()
+        else title?.text = ""
+    }
+    private fun setForecastListWeather(){
+        bind.forecastCardView.layoutManager = forecastComponent.getLayoutManage
+        if(forecastComponent.getCache.isThereCache()) {
+            var adapter= forecastComponent.getCardViewAdapter
+            adapter.lists = forecastComponent.getList.forecastList
+            bind.forecastCardView.adapter = adapter
+        }
     }
 }

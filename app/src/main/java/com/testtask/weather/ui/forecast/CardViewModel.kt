@@ -3,9 +3,15 @@ package com.testtask.weather.ui.forecast
 import android.app.Activity
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.databinding.BaseObservable
 import com.squareup.picasso.Picasso
 import com.testtask.weather.R
+import com.testtask.weather.di.GetDIApplication
+import com.testtask.weather.di.card.CardVMComponent
+import com.testtask.weather.di.card.DaggerCardVMComponent
+import com.testtask.weather.di.todayvm.DaggerTodayViewModelComponent
+import com.testtask.weather.di.todayvm.LocationDialogModule
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlin.collections.ArrayList
@@ -16,9 +22,10 @@ class CardViewModel(var lists:ArrayList<ForecastItem>, var activity: Activity) :
     var time: String = "00:00"
     var weatherType:String =""
     var temperature:String =""
-
+    val cardVM: CardVMComponent
     init {
-        weatherIcon = activity.resources.getDrawable(R.drawable.temp_ic)
+        weatherIcon = getDrawable(activity,R.drawable.temp_ic)!!
+        cardVM =  DaggerCardVMComponent.builder().baseAppComponents(GetDIApplication().get(activity)!!.getApplicationProvider()).build()
     }
 
     fun setDate(position:Int){
@@ -27,7 +34,7 @@ class CardViewModel(var lists:ArrayList<ForecastItem>, var activity: Activity) :
         temperature = lists[position].temperature.toString()+"°"
         notifyChange()
         val t = Thread(Runnable {  weatherIcon = BitmapDrawable(activity.resources,
-            Picasso.with(activity).load(createUrlFromMessage(lists[position].imageWeatherCode)).get())
+            cardVM.getPicasso.load(createUrlFromMessage(lists[position].imageWeatherCode)).get())
             notifyChange()})
         t.start()
     }

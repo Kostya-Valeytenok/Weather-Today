@@ -8,11 +8,12 @@ import android.graphics.drawable.Drawable
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.databinding.BaseObservable
-import com.squareup.picasso.Picasso
 import com.testtask.weather.BR
 import com.testtask.weather.R
-import com.testtask.weather.ViewPagerAdapter
 import com.testtask.weather.api.FiveDayWeatherJSON
+import com.testtask.weather.di.GetDIApplication
+import com.testtask.weather.di.pagervm.DaggerPagerVMComponent
+import com.testtask.weather.di.pagervm.PagerVMComponent
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -34,10 +35,13 @@ class ViewPagerViewModel(var context: Activity, var weatherInfo: FiveDayWeatherJ
     var rainFall = "0.0 mm"
     var date = ""
     var weatherType =""
+    private var pagerVMComponent:PagerVMComponent
 
     init {
         ic = getDrawable(context,R.drawable.temp_ic)!!
         place=""
+        pagerVMComponent = DaggerPagerVMComponent.builder().baseAppComponents(
+            GetDIApplication().get(context)!!.getApplicationProvider()).build()
     }
 
     fun setWeatherInfo(position:Int){
@@ -95,22 +99,23 @@ class ViewPagerViewModel(var context: Activity, var weatherInfo: FiveDayWeatherJ
     }
 
     fun getPhotoDrawableForUrl(position: Int){
-        var tread = Thread(Runnable { ic = BitmapDrawable(context.resources,
-                Picasso.with(context).
-                load(createUrlFromMessage(weatherInfo.list[position].weather[0].icon)).get())
+        val tread = Thread(Runnable { ic = BitmapDrawable(context.resources,
+                pagerVMComponent.getPicasso.load(createUrlFromMessage(weatherInfo.list[position]
+                    .weather[0].icon)).get())
             notifyPropertyChanged(BR._all)})
         tread.start()
     }
     fun createUrlFromMessage(mes:String):String{
-        var firstPart = "http://openweathermap.org/img/wn/"
-        var lastPart = "@2x.png"
-        var message = firstPart+mes + lastPart
+        val firstPart = "http://openweathermap.org/img/wn/"
+        val lastPart = "@2x.png"
+        val message = firstPart+mes + lastPart
         return message
     }
 
     private fun getTime(dateIsoUtsFormat:String, position: Int){
-        val dateFormat: Date = SimpleDateFormat("y-M-d H:m:s").parse(dateIsoUtsFormat)
-        val firstPosFormat: Date = SimpleDateFormat("y-M-d H:m:s").parse(weatherInfo.list[0].dt_txt)
+
+        val dateFormat: Date =  pagerVMComponent.dataFormat.parse(dateIsoUtsFormat)!!
+        val firstPosFormat: Date = pagerVMComponent.dataFormat.parse(weatherInfo.list[0].dt_txt)!!
         var h =""
         var m = ""
         if(position == 0) date = "Now"

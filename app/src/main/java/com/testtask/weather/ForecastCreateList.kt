@@ -12,18 +12,20 @@ class ForecastCreateList(act:Activity) {
     val forecastList: ArrayList<ForecastItem> = ArrayList()
     var dayOfWeak = arrayOf("SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY")
     var temp = 0
-    val forecastComponent= DaggerForecastListComponent.builder().cacheComponents(GetDIApplication().get(act)?.getCache()).build()
+    val forecastComponent= DaggerForecastListComponent.builder()
+        .baseAppComponents(GetDIApplication().get(act)!!.getApplicationProvider())
+        .build()
 
 
     init {
         var dateIsoUtsFormat = forecastComponent.getCache.weatherInfoCache.list[0].dt_txt
-        val dateFormat: Date = SimpleDateFormat("y-M-d H:m:s").parse(dateIsoUtsFormat)
+        val dateFormat: Date = forecastComponent.dataFormat.parse(dateIsoUtsFormat)!!
         temp =dateFormat.day
         forecastList.add(ForecastItem("Today"))
         var x = 0
         while (x<forecastComponent.getCache.weatherInfoCache.list.size){
             var currentDateIsoUtsFormat = forecastComponent.getCache.weatherInfoCache.list[x].dt_txt
-            val currentDateFormat: Date = SimpleDateFormat("y-M-d H:m:s").parse(currentDateIsoUtsFormat)
+            val currentDateFormat: Date = forecastComponent.dataFormat.parse(currentDateIsoUtsFormat)!!
             var temp1 =currentDateFormat.day
             if(temp != currentDateFormat.day) {
                println("Day: "+ currentDateFormat.day)

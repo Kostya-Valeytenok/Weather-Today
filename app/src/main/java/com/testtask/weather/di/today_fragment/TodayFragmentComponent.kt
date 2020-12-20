@@ -13,6 +13,7 @@ import dagger.Component
 
 @Component(modules =  [FragmentTodayBindingModule::class, FragmentTodayVMModule::class,
     TodayWeatherModule::class, ViewPagerModule::class], dependencies = [CacheComponents::class])
+
 @TodayFragmentScope
 interface TodayFragmentComponent {
     val getFragmentTodayBinding: FragmentTodayBinding

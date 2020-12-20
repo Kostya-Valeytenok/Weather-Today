@@ -16,5 +16,4 @@ interface TodayViewModelComponent {
     var getPreference: SharedPreferences
     var disabledLocation: DisabledLocation
     var fragmentManager: FragmentManager
-
 }

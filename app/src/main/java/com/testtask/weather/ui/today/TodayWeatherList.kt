@@ -57,6 +57,7 @@ class TodayWeatherList {
         }
         return itemCount
     }
+
     private fun getObserver(todayWeatherJSON:FiveDayWeatherJSON, weatherInfo: FiveDayWeatherJSON): Observer<Int> {
         return object : Observer<Int> {
             override fun onNext(t: Int?) {

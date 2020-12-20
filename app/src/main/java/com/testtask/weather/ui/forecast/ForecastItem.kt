@@ -1,6 +1,7 @@
 package com.testtask.weather.ui.forecast
 
 class ForecastItem {
+
     var dayOfWeek:String = ""
     lateinit var imageWeatherCode:String
     lateinit var time:String
@@ -10,6 +11,7 @@ class ForecastItem {
     constructor(dayOfWeek: String) {
         this.dayOfWeek = dayOfWeek
     }
+
     constructor(imageWeatherCode: String, time: String, typeOfWeather: String, temperature: Int) {
         this.imageWeatherCode = imageWeatherCode
         this.time = time

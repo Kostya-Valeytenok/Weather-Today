@@ -7,5 +7,4 @@ class Cache {
     lateinit var weatherInfoCache:FiveDayWeatherJSON
 
     fun isThereCache(): Boolean{ return this::weatherInfoCache.isInitialized }
-
 }

@@ -8,24 +8,24 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.testtask.weather.api.FiveDayWeatherJSON
 import com.testtask.weather.databinding.BaseWatherItemsBinding
+import com.testtask.weather.di.pager.DaggerViewPagerComponent
+import com.testtask.weather.di.pager.ViewPagerComponent
+import com.testtask.weather.di.pager.ViewPagerVMModule
+import com.testtask.weather.di.pager.WeatherItemBindingModule
 import com.testtask.weather.ui.today.ViewPagerViewModel
 import javax.inject.Inject
 
 class ViewPagerAdapter(var contexts: Activity) : RecyclerView.Adapter<PagerVH>() {
 
     lateinit var weatherInfo: FiveDayWeatherJSON
-
-    private val colors = intArrayOf(
-        android.R.color.black,
-        android.R.color.holo_red_light,
-        android.R.color.holo_blue_dark,
-        android.R.color.holo_purple
-    )
+    lateinit var viewPagerComponent:ViewPagerComponent
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerVH {
-        var  bind: BaseWatherItemsBinding = DataBindingUtil.inflate(LayoutInflater
-                .from(parent.context),R.layout.base_wather_items, parent, false)
-        return PagerVH(bind, contexts,weatherInfo)
+        viewPagerComponent = DaggerViewPagerComponent.builder()
+            .weatherItemBindingModule(WeatherItemBindingModule(LayoutInflater.from(parent.context), parent))
+            .viewPagerVMModule(ViewPagerVMModule(contexts,weatherInfo))
+            .build()
+        return PagerVH(viewPagerComponent.getBinding, viewPagerComponent)
     }
 
     override fun getItemCount(): Int = weatherInfo.list.size
@@ -34,8 +34,7 @@ class ViewPagerAdapter(var contexts: Activity) : RecyclerView.Adapter<PagerVH>()
         holder.VM.viewModel!!.setWeatherInfo(position) }
     }
 
-class PagerVH(itemView: BaseWatherItemsBinding, context: Activity, weatherInfo: FiveDayWeatherJSON) : RecyclerView.ViewHolder(itemView.root){
+class PagerVH(itemView: BaseWatherItemsBinding, v:ViewPagerComponent) : RecyclerView.ViewHolder(itemView.root){
     var VM: BaseWatherItemsBinding =itemView
-
-    init { VM.viewModel = ViewPagerViewModel(context,weatherInfo) }
+    init { VM.viewModel = v.getVM}
 }

@@ -6,6 +6,7 @@ import com.testtask.weather.di.base_modules.ContextModule
 
 
 class GetDIApplication : Application() {
+
     private lateinit var getDIAComponent: BaseAppComponents
     private lateinit var getCache: CacheComponents
     private lateinit var activity: Activity
@@ -16,14 +17,15 @@ class GetDIApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        getDIAComponent = DaggerBaseAppComponents.builder()
-            .contextModule(ContextModule(this)).build()
         getCache = DaggerCacheComponents.builder().build()
+        getDIAComponent = DaggerBaseAppComponents.builder().cacheComponents(getCache)
+            .contextModule(ContextModule(this)).build()
     }
 
     fun getApplicationProvider(): BaseAppComponents {
         return getDIAComponent
     }
+
     fun IsComponentInit():Boolean{
         return this::getDIAComponent.isInitialized
     }

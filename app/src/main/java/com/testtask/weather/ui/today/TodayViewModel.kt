@@ -23,9 +23,11 @@ import retrofit2.Response
 
 class TodayViewModel(var context: Activity) : BaseObservable() {
 
-    var todayVMComponent = DaggerTodayViewModelComponent.builder().locationDialogModule(
-        LocationDialogModule(context)).baseAppComponents(GetDIApplication().get(context)!!.
-    getApplicationProvider()).fragmentManagerModule(FragmentManagerModule(context)).build()
+    var todayVMComponent = DaggerTodayViewModelComponent.builder().
+    locationDialogModule(LocationDialogModule(context)).
+    baseAppComponents(GetDIApplication().get(context)!!.
+    getApplicationProvider()).fragmentManagerModule(FragmentManagerModule(context)).
+    build()
     var latitude: Double = 0.0
     var longitude: Double = 0.0
 
